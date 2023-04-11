@@ -1,1 +1,108 @@
+<style>
+    html,
+    body {
+        margin: 0;
+  user-select: none;
+    }
 
+    table {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    tr,
+    td {
+        padding: 0;
+        margin: 0;
+        border: solid 1px #eee;
+        height: calc(100%/21);
+    }
+    table img{
+        width: 100%;
+        height: 100%;
+    }
+    .rod{
+        width: 100%;
+        height: 10%;
+        bottom: 0;
+        position: fixed;
+        display: flex;
+        background-color: #00000033;
+    }
+    .rod img{
+        margin: 10px;
+        border: solid 1px #000;
+    }
+</style>
+<table id="table">
+    <tr>
+        <td>w</td>
+    </tr>
+    <tr>
+        <td>a</td>
+        <td>a</td>
+    </tr>
+</table>
+<div class="rod" id="rod">
+    <img src="re.png" onclick=" select = [];retable()">
+    <img src="L.png" onclick="selectch(1,1);retable()">
+</div>
+
+<button onclick="selectch(3);retable();">3</button>
+<script>
+
+    for (imgi = 0; imgi < 13; imgi++) {
+        document.getElementById("rod").innerHTML += "<img src='" + imgi + ".png'  onclick='selectch(" + imgi + ");retable();select = [];'>"
+        
+    }
+
+    data = [[[1, 1]]]; //テーブルデータ
+    select = []; //選択場所
+    tabletate = 20;//縦と横のマス目を入力
+    tableyoko = 20;//縦と横のマス目を入力
+
+    inhtml = "";//一時保存
+
+    //データ変数「data」に空のデータを上の変数分入力する
+    for (vi = 0; vi < tabletate; vi++) {
+        data[vi] = [""]
+        for (ui = 0; ui < tableyoko; ui++) {
+            data[vi][ui] = [""]
+            data[vi][ui][0] = 0
+            data[vi][ui][1] = 0
+        }
+    }
+    retable()
+
+    function retable() {//table生成
+        inhtml = "";//リセット
+        for (ui = 0; ui < tabletate; ui++) {
+            inhtml += "<tr>"
+            for (yi = 0; yi < tableyoko; yi++) {
+                inhtml += "<td>"
+                inhtml += "<img src='" + data[ui][yi][0] + ".png' alt='" + data[ui][yi][0] + "' style='transform:rotate(" + (data[ui][yi][1] * 90) + "deg);"
+                inhtml += "' onclick='this.style.backgroundColor = \"#00FF0088\";clicksel(" + ui + "," + yi +");'>"
+                inhtml += "</td>"
+            }
+            inhtml += "</tr>"
+        }
+         
+        document.getElementById("table").innerHTML = ""   
+        document.getElementById("table").innerHTML = inhtml
+    }
+
+    function selectch(changeto, deg) {//変数「"select"」で選択された範囲を「changeto」に"ch"angeする
+        //角度のみを変更する場合は「deg」を「1」にする
+        for (ui = 0; ui < select.length; ui++) {
+            if (deg == 1) {
+                data[select[ui][0]][select[ui][1]][1] = Math.abs((data[select[ui][0]][select[ui][1]][1] + changeto) % 4)
+            } else {
+                data[select[ui][0]][select[ui][1]][0] = changeto
+            }
+        }
+    }
+
+    function clicksel(hei,wid){
+        select[select.length] = [hei,wid]
+    }
+</script>
